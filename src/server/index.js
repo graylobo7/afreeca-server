@@ -58,6 +58,7 @@ fastify
 // })();
 
 fastify.get("/user/:id", function (req, res) {
+  
   const some = req.params.id;
   this.mongo.db.collection("test").insertOne({ _id: "zzzas", test: req.params.id }, (err, user) => {
     if (err) {
