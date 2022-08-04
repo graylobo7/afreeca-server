@@ -1,5 +1,5 @@
 const puppeteer = require("puppeteer");
-const gamerInfoDataList = require("../data/gamerInfoJson")
+const {gamerInfoDataList} = require("../data/gamerInfoJson")
 function getAfreecaInfo() {
     console.time("getAfreecaInfo");
     console.log(gamerInfoDataList);
@@ -97,4 +97,4 @@ function sleep(ms) {
     });
 }
 
-module.exports = {getAfreecaInfo}
+module.exports = {getAfreecaInfo,sleep}
