@@ -13,49 +13,48 @@ fastify
     console.log("listening on", e);
   })
   .catch((e) => {
-    console.log(e);
-    process.exit(1);
+    console.log("에러발생",e);
   });
 
-// (async function getAfreecaInfoInterval() {
-//   while (true) {
-//     try {
-//       let res = await getAfreecaInfo();
-//       let excludeList = [];
-//       for (const key in res) {
-//         excludeList.push(key);
-//         const result = await new Promise((resolve, reject) => {
-//             this.mongo.db.collection("gamer").updateOne(
-//             { _id: key },
-//             {
-//               $set: {
-//                 afreeca: { ...res[key] },
-//               },
-//             },
-//             (err, result) => {
-//               if (err) {
-//                 reject(err);
-//               }
-//               resolve(key);
-//             }
-//           );
-//         });
-//         // console.log("OnAir: ", result);
-//       }
-//       const result = await new Promise((resolve, reject) => {
-//         this.mongo.db.collection("gamer").updateMany({ _id: { $nin: excludeList } }, { $set: { afreeca: null } }, (err, result) => {
-//           if (err) {
-//             reject(err);
-//           }
-//           resolve("방송정보 초기화 완료.");
-//         });
-//       });
-//       await sleep(10000);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   }
-// })();
+(async function getAfreecaInfoInterval() {
+  while (true) {
+    try {
+      let res = await getAfreecaInfo();
+      let excludeList = [];
+      for (const key in res) {
+        excludeList.push(key);
+        const result = await new Promise((resolve, reject) => {
+            this.mongo.db.collection("gamer").updateOne(
+            { _id: key },
+            {
+              $set: {
+                afreeca: { ...res[key] },
+              },
+            },
+            (err, result) => {
+              if (err) {
+                reject(err);
+              }
+              resolve(key);
+            }
+          );
+        });
+        // console.log("OnAir: ", result);
+      }
+      const result = await new Promise((resolve, reject) => {
+        this.mongo.db.collection("gamer").updateMany({ _id: { $nin: excludeList } }, { $set: { afreeca: null } }, (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          resolve("방송정보 초기화 완료.");
+        });
+      });
+      await sleep(10000);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+})();
 
 fastify.get("/user/:id", function (req, res) {
 
@@ -72,3 +71,22 @@ fastify.get("/user/:id", function (req, res) {
 fastify.get("/", async (req, res) => {
   return { hello: "world" };
 });
+
+fastify.get("/test",(req,res)=>{
+  await new Promise((resolve, reject) => {
+    this.mongo.db.collection("gamer").updateOne(
+    { _id: "이제동" },
+    {
+      $set: {
+        afreeca: "알룡",
+      },
+    },
+    (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(key);
+    }
+  );
+});
+})
