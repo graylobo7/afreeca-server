@@ -72,7 +72,7 @@ fastify.get("/", async (req, res) => {
   return { hello: "world" };
 });
 
-fastify.get("/test",(req,res)=>{
+fastify.get("/test",async(req,res)=>{
   await new Promise((resolve, reject) => {
     this.mongo.db.collection("gamer").updateOne(
     { _id: "이제동" },
