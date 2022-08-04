@@ -8,7 +8,7 @@ fastify.register(require("@fastify/mongodb"), {
   url: "mongodb+srv://seujinsa:tmwlstk7102!@cluster0.3wrxb.mongodb.net/seujinsa?retryWrites=true&w=majority",
 });
 fastify
-  .listen({ port: 3300 })
+  .listen({ port: process.env.PORT||3300 })
   .then((e) => {
     console.log("listening on", e);
   })
@@ -60,7 +60,7 @@ fastify
 fastify.get("/user/:id", function (req, res) {
 
   const some = req.params.id;
-  
+
   this.mongo.db.collection("test").insertOne({ _id: "zzzas", test: req.params.id }, (err, user) => {
     if (err) {
       res.send(err);
