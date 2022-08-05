@@ -26,6 +26,9 @@ function getAfreecaInfo() {
       if (![idList.length, titleList.length, imgList.length].every((v, i, a) => v === a[0])) {
         throw new Error("idList,titleList,imgList length 불일치");
       }
+      if(idList.length <500){
+        throw new Error("전체방송 수집실패:",idList.length);
+      }
       let afreecaInfo = {};
       let idArr = [];
       let titleArr = [];
