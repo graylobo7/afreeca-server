@@ -2,6 +2,13 @@ const express = require("express");
 const { gamerInfoDataList } = require("../data/gamerInfoJson");
 const { getAfreecaInfo, sleep } = require("../utils/utils");
 const app = express();
+const cors = require("cors");
+let corsOptions = {
+  origin: ["https://seujinsa.netlify.app", "http://localhost:3000", "https://seujinsa.com"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 const MongoClient = require("mongodb").MongoClient;
 let db;
 MongoClient.connect("mongodb+srv://seujinsa:tmwlstk7102!@cluster0.3wrxb.mongodb.net/seujinsa?retryWrites=true&w=majority", function (err, client) {
