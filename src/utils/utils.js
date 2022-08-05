@@ -2,7 +2,6 @@ const puppeteer = require("puppeteer");
 const {gamerInfoDataList} = require("../data/gamerInfoJson")
 function getAfreecaInfo() {
     console.time("getAfreecaInfo");
-    console.log(gamerInfoDataList);
   return new Promise(async (resole, reject) => {
     const browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
