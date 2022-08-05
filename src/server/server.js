@@ -61,7 +61,27 @@ MongoClient.connect("mongodb+srv://seujinsa:tmwlstk7102!@cluster0.3wrxb.mongodb.
 })();
 
 app.get("/test", (req, res) => {
-  res.send("zzz");
+  for (const key in gamerInfoDataList) {
+    let result = "";
+    if (gamerInfoDataList[key]["eloCategory"].includes("|")) {
+      const category = gamerInfoDataList[key]["eloCategory"].split("|")[0];
+      const page = gamerInfoDataList[key]["eloPageNum"].split("|")[0];
+      result = `${category}|${page}`;
+    } else {
+      result = `${gamerInfoDataList[key]["eloCategory"]}|${gamerInfoDataList[key]["eloPageNum"]}`;
+    }
+    db.collection("gamer").updateOne(
+      { _id: key },
+      {
+        $set: {
+          ["platform.elo"]: result,
+        },
+      },
+      (err,result)=>{
+        console.log(err,result)
+      }
+    );
+  }
 });
 
 app.get("/insert", (req, res) => {
