@@ -13,13 +13,17 @@ function getAfreecaInfo() {
         await page.waitForXPath("//div[@class='btn-more']/button");
         const some = await page.$x("//div[@class='btn-more']/button");
         await some[0].evaluate((b) => b.click());
-        await sleep(100);
+        await sleep(300);
       }
-      await sleep(3000);
+      await sleep(1000);
       const idList = await page.$x("//div[@id='broadlist_area']/ul/li//div[@class='cBox-info']/div/a");
+      await sleep(1000);
       const titleList = await page.$x("//div[@id='broadlist_area']/ul/li//div[@class='cBox-info']/h3/a");
+      await sleep(1000);
       const viewersList = await page.$x("//div[@id='broadlist_area']/ul/li//div[@class='cBox-info']/div/span/em");
+      await sleep(1000);
       const imgList = await page.$x("//div[@id='broadlist_area']/ul/li//div[@class='thumbs-box']/a");
+      await sleep(5000);
 
       console.log("idList", idList.length, "titleList", titleList.length, "imgList", imgList.length);
 
@@ -27,7 +31,7 @@ function getAfreecaInfo() {
         throw new Error("idList,titleList,imgList length 불일치");
       }
       if(idList.length <500){
-        throw new Error("전체방송 수집실패:",idList.length);
+        throw new Error("전체방송 수집실패: "+idList.length);
       }
       let afreecaInfo = {};
       let idArr = [];
