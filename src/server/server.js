@@ -43,7 +43,7 @@ MongoClient.connect("mongodb+srv://seujinsa:tmwlstk7102!@cluster0.3wrxb.mongodb.
           );
         });
       }
-      const result = await new Promise((resolve, reject) => {
+      await new Promise((resolve, reject) => {
         db.collection("afreeca").updateMany({ _id: { $nin: excludeList } }, { $set: { afreeca: null } }, (err, result) => {
           if (err) {
             reject(err);
@@ -52,7 +52,25 @@ MongoClient.connect("mongodb+srv://seujinsa:tmwlstk7102!@cluster0.3wrxb.mongodb.
         });
       });
 
-      console.log(result);
+      const finalResult =  await new Promise((resolve,reject)=>
+      {
+        db.collection("afreeca")
+        .find({})
+        .toArray((err, res) => {
+          const result = {};
+          for (const e of res) {
+            if (e["afreeca"]) {
+              result[e["_id"]] = e["afreeca"];
+            }
+          }
+          db.collection("live").updateOne({ _id: "live" }, { $set: { data: null } }, (err, res) => {
+            db.collection("live").updateOne({ _id: "live" }, { $set: { data: result } }, (err, res) => {
+              resolve(result)
+            });
+          });
+        });
+      })
+      console.log("갱신완료: ",finalResult);
       await sleep(10000);
     } catch (error) {
       console.log(error);
@@ -77,8 +95,8 @@ app.get("/test", (req, res) => {
           ["platform.elo"]: result,
         },
       },
-      (err,result)=>{
-        console.log(err,result)
+      (err, result) => {
+        console.log(err, result);
       }
     );
   }
@@ -104,16 +122,4 @@ app.delete("/column/:collection/:field", async (req, res) => {
   }
 });
 
-app.get("/live", (req, response) => {
-  const result = {};
-  db.collection("afreeca")
-    .find({})
-    .toArray((err, res) => {
-      for (const e of res) {
-        if (e["afreeca"]) {
-          result[e["_id"]] = e["afreeca"];
-        }
-      }
-      response.json(result);
-    });
-});
+app.get("/live", (req, response) => {});
