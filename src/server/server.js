@@ -70,7 +70,7 @@ MongoClient.connect("mongodb+srv://seujinsa:tmwlstk7102!@cluster0.3wrxb.mongodb.
           });
         });
       })
-      console.log("갱신완료: ",finalResult);
+      console.log("갱신완료",excludeList);
       await sleep(10000);
     } catch (error) {
       console.log(error);
