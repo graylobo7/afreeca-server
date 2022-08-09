@@ -2,6 +2,7 @@ const express = require("express");
 const { gamerInfoDataList } = require("../data/gamerInfoJson");
 const { getAfreecaInfo, sleep } = require("../utils/utils");
 const app = express();
+const https = require("https");
 const cors = require("cors");
 let corsOptions = {
   origin: ["https://seujinsa.netlify.app", "http://localhost:3000", "https://seujinsa.com"],
@@ -18,6 +19,9 @@ MongoClient.connect("mongodb+srv://seujinsa:tmwlstk7102!@cluster0.3wrxb.mongodb.
     console.log(`listening on ${process.env.PORT || 3005}`);
   });
 });
+setInterval(function () {
+  https.get("https://afreeca.herokuapp.com/");
+}, 1000 * 60 * 10);
 
 (async function getAfreecaInfoInterval() {
   while (true) {
@@ -52,25 +56,24 @@ MongoClient.connect("mongodb+srv://seujinsa:tmwlstk7102!@cluster0.3wrxb.mongodb.
         });
       });
 
-      const finalResult =  await new Promise((resolve,reject)=>
-      {
+      const finalResult = await new Promise((resolve, reject) => {
         db.collection("afreeca")
-        .find({})
-        .toArray((err, res) => {
-          const result = {};
-          for (const e of res) {
-            if (e["afreeca"]) {
-              result[e["_id"]] = e["afreeca"];
+          .find({})
+          .toArray((err, res) => {
+            const result = {};
+            for (const e of res) {
+              if (e["afreeca"]) {
+                result[e["_id"]] = e["afreeca"];
+              }
             }
-          }
-          db.collection("live").updateOne({ _id: "live" }, { $set: { data: null } }, (err, res) => {
-            db.collection("live").updateOne({ _id: "live" }, { $set: { data: result } }, (err, res) => {
-              resolve(result)
+            db.collection("live").updateOne({ _id: "live" }, { $set: { data: null } }, (err, res) => {
+              db.collection("live").updateOne({ _id: "live" }, { $set: { data: result } }, (err, res) => {
+                resolve(result);
+              });
             });
           });
-        });
-      })
-      console.log("갱신완료",excludeList);
+      });
+      console.log("갱신완료", excludeList);
       await sleep(10000);
     } catch (error) {
       console.log(error);
