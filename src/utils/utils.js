@@ -9,9 +9,13 @@ function getAfreecaInfo() {
     try {
       const page = await browser.newPage();
       await page.goto("https://login.afreecatv.com/afreeca/login.php/");
+      await sleep(1000);
       await page.type("#uid", "jjunny0721");
+      await sleep(1000);
       await page.type("#password", "wjrxhak7102!");
+      await sleep(1000);
       const loginButton = await page.$x("//button[@onclick='login();']");
+      await sleep(1000);
       console.log(loginButton.length);
       await loginButton[0].click();
       await sleep(1000);
