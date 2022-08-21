@@ -12,10 +12,11 @@ function getAfreecaInfo() {
       await page.type("#uid", "jjunny0721");
       await page.type("#password", "wjrxhak7102!");
       const loginButton = await page.$x("//button[@onclick='login();']");
+      console.log(loginButton.length);
       await loginButton[0].click();
       await sleep(1000);
 
-      for (let i = 0; i < 45; i++) {
+      for (let i = 0; i < 5; i++) {
         await page.waitForXPath("//div[@class='btn-more']/button");
         const some = await page.$x("//div[@class='btn-more']/button");
         await some[0].evaluate((b) => b.click());
@@ -36,9 +37,9 @@ function getAfreecaInfo() {
       if (![idList.length, titleList.length, imgList.length].every((v, i, a) => v === a[0])) {
         throw new Error("idList,titleList,imgList length 불일치");
       }
-      if (idList.length < 500) {
-        throw new Error("전체방송 수집실패: " + idList.length);
-      }
+      // if (idList.length < 500) {
+      //   throw new Error("전체방송 수집실패: " + idList.length);
+      // }
       let afreecaInfo = {};
       let idArr = [];
       let titleArr = [];
