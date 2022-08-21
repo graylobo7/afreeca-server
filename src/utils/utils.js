@@ -1,26 +1,15 @@
 const puppeteer = require("puppeteer");
-const { gamerInfoDataList } = require("../data/gamerInfoJson");
+const {gamerInfoDataList} = require("../data/gamerInfoJson")
 function getAfreecaInfo() {
-  console.time("getAfreecaInfo");
+    console.time("getAfreecaInfo");
   return new Promise(async (resole, reject) => {
     const browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
     try {
       const page = await browser.newPage();
-      await page.goto("https://login.afreecatv.com/afreeca/login.php/");
-      await sleep(1000);
-      await page.type("#uid", "jjunny0721");
-      await sleep(1000);
-      await page.type("#password", "wjrxhak7102!");
-      await sleep(1000);
-      const loginButton = await page.$x("//button[@onclick='login();']");
-      await sleep(1000);
-      console.log(loginButton.length);
-      await loginButton[0].click();
-      await sleep(1000);
-
-      for (let i = 0; i < 5; i++) {
+      await page.goto("https://www.afreecatv.com/");
+      for (let i = 0; i < 45; i++) {
         await page.waitForXPath("//div[@class='btn-more']/button");
         const some = await page.$x("//div[@class='btn-more']/button");
         await some[0].evaluate((b) => b.click());
@@ -41,9 +30,9 @@ function getAfreecaInfo() {
       if (![idList.length, titleList.length, imgList.length].every((v, i, a) => v === a[0])) {
         throw new Error("idList,titleList,imgList length 불일치");
       }
-      // if (idList.length < 500) {
-      //   throw new Error("전체방송 수집실패: " + idList.length);
-      // }
+      if(idList.length <500){
+        throw new Error("전체방송 수집실패: "+idList.length);
+      }
       let afreecaInfo = {};
       let idArr = [];
       let titleArr = [];
@@ -107,11 +96,11 @@ function getAfreecaInfo() {
 }
 
 function sleep(ms) {
-  return new Promise((res) => {
-    setTimeout(() => {
-      res();
-    }, ms);
-  });
+    return new Promise((res) => {
+        setTimeout(() => {
+            res();
+        }, ms);
+    });
 }
 
-module.exports = { getAfreecaInfo, sleep };
+module.exports = {getAfreecaInfo,sleep}
